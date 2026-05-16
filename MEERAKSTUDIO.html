@@ -3,970 +3,1237 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🛍️ ระบบดูสินค้าในร้าน</title>
-<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>✿ MEERAK STUDIO ✿</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500&family=Mitr:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --pink-100: #fff0f6;
-    --pink-200: #ffd6e7;
-    --pink-300: #ffadd2;
-    --pink-400: #ff85c2;
-    --pink-500: #f759ab;
-    --pink-600: #eb2f96;
-    --green-100: #f0fff4;
-    --green-200: #d9f7be;
-    --green-300: #b7eb8f;
-    --green-400: #73d13d;
-    --green-500: #52c41a;
-    --green-600: #389e0d;
-    --mint: #a8e6cf;
+    --pink1: #ffd6e8;
+    --pink2: #ffb3d1;
+    --pink3: #ff85b3;
+    --green1: #d4f5e2;
+    --green2: #a8e6c0;
+    --green3: #5ecf8a;
+    --green4: #3db870;
+    --text-dark: #2d4a3e;
+    --text-mid: #4a7a5e;
+    --card-bg: rgba(255,255,255,0.82);
+    --border-pink: rgba(255,179,209,0.7);
+    --border-green: rgba(94,207,138,0.5);
+    --shadow: 0 8px 32px rgba(255,133,179,0.18), 0 2px 8px rgba(61,184,112,0.10);
     --radius: 25px;
-    --radius-sm: 14px;
-    --shadow: 0 8px 32px rgba(247,89,171,0.15);
-    --shadow-green: 0 8px 32px rgba(82,196,26,0.15);
-    --shadow-hover: 0 16px 48px rgba(247,89,171,0.25);
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
 
   body {
     font-family: 'Kanit', sans-serif;
+    background: linear-gradient(160deg, #ffe0ef 0%, #f0fdf5 40%, #ffeef6 70%, #e8faf0 100%);
     min-height: 100vh;
-    background: linear-gradient(135deg, #fff0f6 0%, #f0fff4 50%, #fff0f6 100%);
-    background-attachment: fixed;
+    color: var(--text-dark);
     overflow-x: hidden;
-  }
-
-  /* Animated blobs background */
-  body::before {
-    content: '';
-    position: fixed; inset: 0; z-index: -1;
-    background:
-      radial-gradient(ellipse 60% 50% at 20% 20%, rgba(255,173,210,.35) 0%, transparent 70%),
-      radial-gradient(ellipse 50% 60% at 80% 80%, rgba(168,230,207,.4) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 40% at 60% 20%, rgba(255,240,246,.8) 0%, transparent 60%),
-      radial-gradient(ellipse 55% 45% at 10% 70%, rgba(215,250,228,.5) 0%, transparent 65%);
-    animation: bgShift 12s ease-in-out infinite alternate;
-  }
-  @keyframes bgShift {
-    0%   { opacity: 1; }
-    50%  { opacity: 0.75; }
-    100% { opacity: 1; }
-  }
-
-  /* ===== HEADER ===== */
-  .header {
-    background: linear-gradient(135deg, rgba(255,255,255,0.85) 0%, rgba(255,240,246,0.9) 100%);
-    backdrop-filter: blur(20px);
-    border-bottom: 2px solid var(--pink-200);
-    padding: 0 clamp(16px,4vw,40px);
-    position: sticky; top: 0; z-index: 100;
-    box-shadow: 0 4px 24px rgba(247,89,171,0.10);
-  }
-  .header-inner {
-    max-width: 1400px; margin: 0 auto;
-    display: flex; align-items: center; justify-content: space-between;
-    height: 72px; gap: 16px;
-  }
-  .logo {
-    display: flex; align-items: center; gap: 12px;
-    text-decoration: none;
-  }
-  .logo-icon {
-    width: 46px; height: 46px;
-    background: linear-gradient(135deg, var(--pink-500), var(--green-500));
-    border-radius: var(--radius-sm);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-    box-shadow: 0 4px 16px rgba(247,89,171,0.35);
-    flex-shrink: 0;
-  }
-  .logo-text { line-height: 1.2; }
-  .logo-text h1 { font-size: clamp(15px,2.5vw,20px); font-weight: 700; color: var(--pink-600); }
-  .logo-text span { font-size: 11px; font-weight: 400; color: var(--green-600); }
-
-  .header-badge {
-    display: flex; align-items: center; gap: 8px;
-    background: linear-gradient(135deg, var(--pink-200), var(--green-200));
-    padding: 8px 16px; border-radius: 50px;
-    font-size: 12px; font-weight: 500;
-    color: #555; flex-shrink: 0;
-  }
-  .dot-live {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--green-500);
-    box-shadow: 0 0 6px var(--green-500);
-    animation: blink 1.5s infinite;
-  }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
-
-  /* ===== MAIN ===== */
-  .main { max-width: 1400px; margin: 0 auto; padding: clamp(20px,4vw,40px) clamp(16px,4vw,40px); }
-
-  /* ===== CONNECT CARD ===== */
-  .connect-card {
-    background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(255,240,246,0.9));
-    border-radius: var(--radius);
-    border: 2px solid var(--pink-200);
-    box-shadow: var(--shadow);
-    padding: clamp(24px,4vw,40px);
-    margin-bottom: 28px;
-    transition: box-shadow .3s;
-  }
-  .connect-card:hover { box-shadow: var(--shadow-hover); }
-  .connect-title {
-    display: flex; align-items: center; gap: 12px;
-    font-size: clamp(16px,2.5vw,20px); font-weight: 700;
-    color: var(--pink-600); margin-bottom: 20px;
-  }
-  .connect-title .icon-wrap {
-    background: linear-gradient(135deg, var(--pink-400), var(--green-400));
-    border-radius: var(--radius-sm);
-    width: 38px; height: 38px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; flex-shrink: 0;
-  }
-
-  .input-row {
-    display: flex; gap: 12px; flex-wrap: wrap;
-  }
-  .input-wrap {
-    flex: 1; min-width: 240px; position: relative;
-  }
-  .input-wrap .input-icon {
-    position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
-    font-size: 18px; pointer-events: none;
-  }
-  .url-input {
-    width: 100%;
-    padding: 14px 18px 14px 46px;
-    border: 2px solid var(--pink-200);
-    border-radius: var(--radius);
-    font-family: 'Kanit', sans-serif;
-    font-size: 14px; color: #333;
-    background: rgba(255,255,255,0.9);
-    outline: none; transition: all .3s;
-  }
-  .url-input::placeholder { color: #bbb; }
-  .url-input:focus {
-    border-color: var(--pink-400);
-    box-shadow: 0 0 0 4px rgba(247,89,171,0.12);
-    background: #fff;
-  }
-
-  .btn {
-    padding: 14px 28px; border: none; border-radius: var(--radius);
-    font-family: 'Kanit', sans-serif; font-size: 15px; font-weight: 600;
-    cursor: pointer; transition: all .25s; display: flex;
-    align-items: center; gap: 8px; white-space: nowrap;
-  }
-  .btn-primary {
-    background: linear-gradient(135deg, var(--pink-500), var(--pink-600));
-    color: white;
-    box-shadow: 0 4px 16px rgba(247,89,171,0.4);
-  }
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(247,89,171,0.5);
-  }
-  .btn-primary:active { transform: translateY(0); }
-
-  .btn-secondary {
-    background: linear-gradient(135deg, var(--green-400), var(--green-600));
-    color: white;
-    box-shadow: 0 4px 16px rgba(82,196,26,0.35);
-  }
-  .btn-secondary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(82,196,26,0.45);
-  }
-
-  .btn-outline {
-    background: transparent;
-    border: 2px solid var(--pink-300);
-    color: var(--pink-600);
-  }
-  .btn-outline:hover {
-    background: var(--pink-100);
-    border-color: var(--pink-400);
-  }
-
-  .hint-row {
-    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px;
-  }
-  .hint-chip {
-    background: linear-gradient(135deg, var(--pink-100), var(--green-100));
-    border: 1px solid var(--pink-200);
-    border-radius: 50px; padding: 5px 14px;
-    font-size: 12px; color: #666; cursor: pointer;
-    transition: all .2s;
-  }
-  .hint-chip:hover {
-    background: linear-gradient(135deg, var(--pink-200), var(--green-200));
-    color: #333; transform: translateY(-1px);
-  }
-
-  /* ===== TYPE TABS ===== */
-  .tabs-row {
-    display: flex; gap: 8px; flex-wrap: wrap;
-    margin-bottom: 24px;
-  }
-  .tab-btn {
-    padding: 10px 20px;
-    border-radius: var(--radius);
-    border: 2px solid var(--pink-200);
-    background: rgba(255,255,255,0.8);
-    font-family: 'Kanit', sans-serif;
-    font-size: 13px; font-weight: 500;
-    color: #777; cursor: pointer; transition: all .2s;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .tab-btn:hover, .tab-btn.active {
-    background: linear-gradient(135deg, var(--pink-500), var(--pink-600));
-    border-color: var(--pink-500);
-    color: white;
-    box-shadow: 0 4px 14px rgba(247,89,171,0.35);
-    transform: translateY(-2px);
-  }
-  .tab-btn.active-green {
-    background: linear-gradient(135deg, var(--green-400), var(--green-600));
-    border-color: var(--green-400);
-    color: white;
-    box-shadow: 0 4px 14px rgba(82,196,26,0.35);
-  }
-
-  /* ===== VIEWER AREA ===== */
-  .viewer-card {
-    background: rgba(255,255,255,0.92);
-    border-radius: var(--radius);
-    border: 2px solid var(--pink-200);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    min-height: 500px;
-    display: none;
-    transition: all .3s;
-  }
-  .viewer-card.show { display: block; animation: fadeUp .4s ease-out; }
-  @keyframes fadeUp {
-    from { opacity:0; transform:translateY(20px); }
-    to   { opacity:1; transform:translateY(0); }
-  }
-
-  .viewer-header {
-    background: linear-gradient(135deg, var(--pink-100), var(--green-100));
-    border-bottom: 2px solid var(--pink-200);
-    padding: 16px 24px;
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: 12px;
-  }
-  .viewer-title {
-    font-size: 15px; font-weight: 600; color: var(--pink-600);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .viewer-actions { display: flex; gap: 8px; }
-  .icon-btn {
-    width: 36px; height: 36px; border-radius: var(--radius-sm);
-    border: 2px solid var(--pink-200);
-    background: white; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px; transition: all .2s;
-    text-decoration: none;
-  }
-  .icon-btn:hover {
-    background: var(--pink-100);
-    border-color: var(--pink-400);
-    transform: scale(1.08);
-  }
-
-  .iframe-wrap {
-    width: 100%; height: clamp(420px, 70vh, 800px);
-    position: relative; background: #fafafa;
-  }
-  .iframe-wrap iframe {
-    width: 100%; height: 100%;
-    border: none;
-  }
-
-  /* ===== DEMO SECTION ===== */
-  .demo-card {
-    background: rgba(255,255,255,0.85);
-    border-radius: var(--radius);
-    border: 2px solid var(--green-200);
-    box-shadow: var(--shadow-green);
-    padding: clamp(20px,4vw,32px);
-    margin-bottom: 28px;
-  }
-  .section-header {
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: 12px; margin-bottom: 20px;
-  }
-  .section-title {
-    display: flex; align-items: center; gap: 10px;
-    font-size: clamp(15px,2.5vw,18px); font-weight: 700; color: var(--green-600);
-  }
-  .section-title .bubble {
-    background: linear-gradient(135deg, var(--green-400), var(--green-600));
-    color: white; border-radius: var(--radius-sm);
-    width: 36px; height: 36px;
-    display: flex; align-items: center; justify-content: center; font-size: 16px;
-  }
-
-  .search-filter-row {
-    display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;
-  }
-  .search-box {
-    flex: 1; min-width: 200px; position: relative;
-  }
-  .search-box input {
-    width: 100%; padding: 11px 16px 11px 42px;
-    border: 2px solid var(--green-200);
-    border-radius: var(--radius);
-    font-family: 'Kanit', sans-serif; font-size: 14px;
-    background: rgba(255,255,255,0.9); outline: none; transition: all .3s;
-  }
-  .search-box input:focus {
-    border-color: var(--green-400);
-    box-shadow: 0 0 0 4px rgba(82,196,26,0.12);
-  }
-  .search-box .s-icon {
-    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-    font-size: 16px; pointer-events: none;
-  }
-  .filter-select {
-    padding: 11px 16px; border: 2px solid var(--green-200);
-    border-radius: var(--radius); background: white;
-    font-family: 'Kanit', sans-serif; font-size: 14px; color: #555;
-    outline: none; cursor: pointer; transition: all .3s;
-  }
-  .filter-select:focus { border-color: var(--green-400); }
-
-  /* ===== PRODUCT GRID ===== */
-  .product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 18px;
-  }
-  .product-card {
-    background: linear-gradient(145deg, #fff, var(--pink-100));
-    border: 2px solid var(--pink-200);
-    border-radius: var(--radius);
-    overflow: hidden;
-    transition: all .3s; cursor: pointer;
     position: relative;
   }
-  .product-card:hover {
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: var(--shadow-hover);
-    border-color: var(--pink-400);
-  }
-  .product-card:hover .product-img { transform: scale(1.08); }
 
-  .product-img-wrap {
-    height: 140px; overflow: hidden;
-    background: linear-gradient(135deg, var(--pink-200), var(--green-200));
-    display: flex; align-items: center; justify-content: center;
+  /* ====== Snow Canvas ====== */
+  #snow-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
   }
-  .product-img { font-size: 56px; transition: transform .3s; }
 
-  .product-badge {
-    position: absolute; top: 10px; right: 10px;
-    padding: 3px 10px; border-radius: 50px;
-    font-size: 10px; font-weight: 600;
+  /* ====== Background blobs ====== */
+  .bg-blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.25;
+    pointer-events: none;
+    z-index: 0;
   }
-  .badge-in  { background: var(--green-200); color: var(--green-600); }
-  .badge-low { background: #fff3e0; color: #e65100; }
-  .badge-out { background: #fce4ec; color: #c62828; }
+  .bg-blob-1 { width: 400px; height: 400px; background: #ffb3d1; top: -100px; left: -100px; animation: blobFloat 8s ease-in-out infinite; }
+  .bg-blob-2 { width: 350px; height: 350px; background: #a8e6c0; top: 30%; right: -80px; animation: blobFloat 10s ease-in-out infinite reverse; }
+  .bg-blob-3 { width: 300px; height: 300px; background: #ffd6e8; bottom: 10%; left: 10%; animation: blobFloat 7s ease-in-out infinite 2s; }
 
-  .product-body { padding: 14px; }
-  .product-name { font-size: 13px; font-weight: 600; color: #333; margin-bottom: 4px; }
-  .product-cat  { font-size: 11px; color: #999; margin-bottom: 8px; }
-  .product-footer {
-    display: flex; align-items: center; justify-content: space-between;
+  @keyframes blobFloat {
+    0%,100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-30px) scale(1.05); }
   }
-  .product-price { font-size: 15px; font-weight: 700; color: var(--pink-600); }
-  .product-qty   { font-size: 11px; color: var(--green-600); font-weight: 600;
-    background: var(--green-100); padding: 2px 8px; border-radius: 50px; }
 
-  /* ===== STATS ROW ===== */
-  .stats-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 14px; margin-bottom: 24px;
+  /* ====== Page wrapper ====== */
+  .page {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 36px 16px 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    position: relative;
+    z-index: 1;
   }
-  .stat-card {
-    background: rgba(255,255,255,0.9);
+
+  /* ====== Profile ====== */
+  .profile-ring {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    padding: 3px;
+    background: linear-gradient(135deg, var(--pink3), var(--green3), var(--pink2));
+    animation: ringPulse 3s ease-in-out infinite;
+  }
+  @keyframes ringPulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(255,133,179,0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(255,133,179,0); }
+  }
+
+  .profile-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid white;
+    object-fit: cover;
+    background: linear-gradient(135deg, var(--pink1), var(--green1));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    overflow: hidden;
+  }
+  .profile-avatar img {
+    width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+  }
+
+  .profile-name {
+    margin-top: 14px;
+    font-size: 20px;
+    font-weight: 700;
+    font-family: 'Mitr', sans-serif;
+    background: linear-gradient(135deg, var(--pink3), var(--green4));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.5px;
+    text-align: center;
+  }
+
+  .profile-badge {
+    margin-top: 6px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .badge {
+    background: linear-gradient(135deg, rgba(255,179,209,0.5), rgba(168,230,192,0.5));
+    border: 1px solid var(--border-pink);
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 11px;
+    color: var(--text-mid);
+    font-family: 'Sarabun', sans-serif;
+  }
+
+  .profile-desc {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--text-mid);
+    text-align: center;
+    line-height: 1.8;
+    font-family: 'Sarabun', sans-serif;
+    background: var(--card-bg);
+    border: 1px solid var(--border-pink);
     border-radius: var(--radius);
-    padding: 18px 20px;
-    display: flex; align-items: center; gap: 14px;
-    border: 2px solid var(--pink-200);
-    transition: all .25s;
-    box-shadow: 0 4px 16px rgba(247,89,171,0.08);
+    padding: 12px 18px;
+    width: 100%;
+    backdrop-filter: blur(8px);
   }
-  .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
-  .stat-icon {
-    width: 44px; height: 44px; border-radius: var(--radius-sm);
-    display: flex; align-items: center; justify-content: center; font-size: 22px;
+
+  .notice-box {
+    margin-top: 8px;
+    background: linear-gradient(135deg, rgba(255,214,232,0.7), rgba(212,245,226,0.7));
+    border: 1.5px solid var(--border-pink);
+    border-radius: 20px;
+    padding: 5px 18px;
+    font-size: 12.5px;
+    color: var(--text-mid);
+    font-family: 'Sarabun', sans-serif;
+    text-align: center;
+  }
+
+  /* ====== Music Player ====== */
+  .music-player {
+    margin-top: 20px;
+    width: 100%;
+    background: linear-gradient(135deg, #ff6fa3 0%, #e05c8a 50%, #3db870 100%);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .music-player::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+    border-radius: var(--radius);
+  }
+
+  .music-thumb {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.25);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    position: relative; z-index: 1;
+  }
+
+  .music-info { flex: 1; position: relative; z-index: 1; }
+  .music-title { font-size: 13px; font-weight: 600; }
+  .music-artist { font-size: 11px; opacity: 0.8; margin-top: 2px; }
+  .music-tag {
+    background: rgba(255,255,255,0.25);
+    font-size: 10px; padding: 2px 8px;
+    border-radius: 20px; margin-top: 4px;
+    display: inline-block;
+  }
+
+  .music-play {
+    width: 36px; height: 36px;
+    background: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: #e05c8a; font-size: 14px; cursor: pointer;
+    position: relative; z-index: 1;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: transform 0.2s;
+  }
+  .music-play:hover { transform: scale(1.1); }
+
+  /* ====== Divider ====== */
+  .divider {
+    width: 80%;
+    margin: 18px auto;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .divider-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
     flex-shrink: 0;
   }
-  .stat-info { min-width: 0; }
-  .stat-value { font-size: 22px; font-weight: 700; color: #333; line-height: 1.1; }
-  .stat-label { font-size: 11px; color: #888; margin-top: 2px; }
-
-  /* ===== LOADING ===== */
-  .loading-overlay {
-    position: absolute; inset: 0; z-index: 10;
-    background: rgba(255,255,255,0.85);
-    backdrop-filter: blur(4px);
-    display: none; align-items: center; justify-content: center;
-    flex-direction: column; gap: 16px; border-radius: var(--radius);
-  }
-  .loading-overlay.show { display: flex; }
-  .spinner {
-    width: 48px; height: 48px; border-radius: 50%;
-    border: 4px solid var(--pink-200);
-    border-top-color: var(--pink-500);
-    animation: spin .8s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .loading-text { font-size: 14px; color: var(--pink-600); font-weight: 500; }
-
-  /* ===== TOAST ===== */
-  .toast {
-    position: fixed; bottom: 30px; right: 24px; z-index: 9999;
-    background: linear-gradient(135deg, var(--pink-500), var(--green-500));
-    color: white; padding: 14px 22px; border-radius: var(--radius);
-    font-size: 14px; font-weight: 500; box-shadow: var(--shadow-hover);
-    transform: translateY(80px); opacity: 0;
-    transition: all .4s cubic-bezier(.34,1.56,.64,1);
-    max-width: calc(100vw - 48px);
-  }
-  .toast.show { transform: translateY(0); opacity: 1; }
-
-  /* ===== EMPTY STATE ===== */
-  .empty-state {
-    text-align: center; padding: 60px 20px; color: #aaa;
-  }
-  .empty-state .big-icon { font-size: 72px; margin-bottom: 16px; }
-  .empty-state h3 { font-size: 18px; font-weight: 600; color: var(--pink-400); margin-bottom: 8px; }
-  .empty-state p { font-size: 13px; color: #bbb; }
-
-  /* ===== FOOTER ===== */
-  .footer {
-    text-align: center; padding: 28px 20px;
-    font-size: 12px; color: #bbb;
-    border-top: 1px solid var(--pink-200); margin-top: 12px;
-  }
-  .footer span { color: var(--pink-400); }
-
-  /* ===== RESPONSIVE ===== */
-  @media (max-width: 600px) {
-    .input-row { flex-direction: column; }
-    .btn { justify-content: center; }
-    .product-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
-    .viewer-header { flex-direction: column; align-items: flex-start; }
-    .stats-row { grid-template-columns: 1fr 1fr; }
-  }
-  @media (orientation: landscape) and (max-height: 500px) {
-    .header-inner { height: 56px; }
-    .logo-icon { width: 36px; height: 36px; font-size: 17px; }
-    .iframe-wrap { height: 80vh; }
+  .divider-dot:nth-child(odd) { background: var(--pink3); }
+  .divider-dot:nth-child(even) { background: var(--green3); }
+  .divider-line-mid {
+    height: 1.5px; flex: 1;
+    background: linear-gradient(90deg, var(--pink2), var(--green2));
+    border-radius: 2px;
   }
 
-  /* ===== MODAL ===== */
-  .modal-overlay {
-    display: none; position: fixed; inset: 0; z-index: 500;
-    background: rgba(247,89,171,0.15); backdrop-filter: blur(6px);
-    align-items: center; justify-content: center; padding: 20px;
+  /* ====== Section Header ====== */
+  .section-header {
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Mitr', sans-serif;
+    text-align: center;
+    margin: 6px 0 12px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--text-dark);
   }
-  .modal-overlay.show { display: flex; animation: fadeIn .2s ease; }
-  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-  .modal {
-    background: linear-gradient(145deg, #fff, var(--pink-100));
-    border: 2px solid var(--pink-200);
-    border-radius: var(--radius); padding: 32px;
-    max-width: 480px; width: 100%;
-    box-shadow: 0 24px 60px rgba(247,89,171,0.25);
-    animation: popIn .3s cubic-bezier(.34,1.56,.64,1);
-    max-height: 90vh; overflow-y: auto;
+  .section-header::before,
+  .section-header::after {
+    content: '';
+    height: 1.5px;
+    flex: 1;
+    background: linear-gradient(90deg, transparent, var(--pink3));
+    border-radius: 2px;
   }
-  @keyframes popIn { from{transform:scale(.85);opacity:0} to{transform:scale(1);opacity:1} }
-  .modal-title {
-    font-size: 18px; font-weight: 700; color: var(--pink-600);
-    margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+  .section-header::after {
+    background: linear-gradient(90deg, var(--green3), transparent);
   }
-  .modal-body { font-size: 13px; color: #666; line-height: 1.8; margin-bottom: 20px; }
-  .modal-body code {
-    background: var(--pink-100); color: var(--pink-600);
-    padding: 2px 8px; border-radius: 6px; font-size: 12px; word-break: break-all;
+
+  /* ====== Carousel Wrap ====== */
+  .carousel-wrap {
+    width: 100%;
+    background: var(--card-bg);
+    border: 1.5px solid var(--border-pink);
+    border-radius: var(--radius);
+    padding: 14px 14px 12px;
+    margin-bottom: 8px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(255,133,179,0.12);
+    transition: box-shadow 0.3s;
   }
-  .modal-step {
-    display: flex; gap: 12px; align-items: flex-start;
-    margin-bottom: 12px;
+  .carousel-wrap:hover {
+    box-shadow: 0 8px 32px rgba(255,133,179,0.2), 0 2px 8px rgba(61,184,112,0.1);
   }
-  .step-num {
-    background: linear-gradient(135deg, var(--pink-400), var(--green-400));
-    color: white; width: 24px; height: 24px; border-radius: 50%;
+
+  .carousel-section-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-mid);
+    margin-bottom: 10px;
+    font-family: 'Sarabun', sans-serif;
+    background: linear-gradient(90deg, var(--pink1), var(--green1));
+    padding: 3px 12px;
+    border-radius: 20px;
+    display: inline-block;
+  }
+
+  .carousel-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+  .carousel-scroll::-webkit-scrollbar { display: none; }
+
+  .carousel-item {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    width: 120px;
+  }
+
+  .carousel-img {
+    width: 120px; height: 120px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, var(--pink1), var(--green1));
     display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+    font-size: 36px;
+    border: 1.5px solid rgba(255,179,209,0.5);
+    overflow: hidden;
+    transition: transform 0.25s, box-shadow 0.25s;
   }
-  .modal-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .carousel-img:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 8px 20px rgba(255,133,179,0.25);
+  }
+  .carousel-img img {
+    width: 100%; height: 100%; object-fit: cover; border-radius: 16px;
+  }
+
+  .img-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 34px;
+    background: linear-gradient(135deg, rgba(255,214,232,0.8), rgba(212,245,226,0.8));
+    border-radius: 16px;
+  }
+
+  .carousel-name {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-top: 7px;
+    text-align: center;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: 'Sarabun', sans-serif;
+  }
+
+  .carousel-price-btn {
+    display: block;
+    width: 100%;
+    margin-top: 5px;
+    background: linear-gradient(135deg, rgba(255,214,232,0.6), rgba(212,245,226,0.6));
+    border: 1.5px solid var(--border-pink);
+    border-radius: 20px;
+    padding: 4px 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-mid);
+    text-align: center;
+    text-decoration: none;
+    font-family: 'Kanit', sans-serif;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  }
+  .carousel-price-btn:hover {
+    background: linear-gradient(135deg, var(--pink2), var(--green2));
+    border-color: var(--green3);
+    color: var(--text-dark);
+    transform: scale(1.03);
+  }
+
+  /* ====== Link Buttons ====== */
+  .link-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 13px 20px;
+    background: var(--card-bg);
+    border: 1.5px solid var(--border-pink);
+    border-radius: var(--radius);
+    color: var(--text-dark);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Kanit', sans-serif;
+    margin-bottom: 8px;
+    backdrop-filter: blur(8px);
+    transition: all 0.25s;
+    box-shadow: 0 2px 12px rgba(255,133,179,0.1);
+  }
+  .link-btn:hover {
+    background: linear-gradient(135deg, rgba(255,214,232,0.8), rgba(212,245,226,0.8));
+    border-color: var(--green3);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255,133,179,0.2);
+  }
+
+  /* ====== Footer ====== */
+  .footer-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(255,255,255,0.92);
+    border-top: 1.5px solid var(--border-pink);
+    backdrop-filter: blur(16px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dark);
+    z-index: 100;
+    box-shadow: 0 -4px 20px rgba(255,133,179,0.12);
+  }
+  .footer-right {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--green4);
+    font-weight: 600;
+  }
+
+  /* ====== Animations ====== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+
+  .profile-ring    { animation: fadeUp 0.5s ease both 0.05s; }
+  .profile-name    { animation: fadeUp 0.5s ease both 0.15s; }
+  .profile-badge   { animation: fadeUp 0.5s ease both 0.2s; }
+  .profile-desc    { animation: fadeUp 0.5s ease both 0.25s; }
+  .notice-box      { animation: fadeUp 0.5s ease both 0.3s; }
+  .music-player    { animation: fadeUp 0.5s ease both 0.35s; }
+
+  .section-block { animation: fadeUp 0.5s ease both; }
+  .section-block:nth-child(1)  { animation-delay: 0.1s; }
+  .section-block:nth-child(2)  { animation-delay: 0.15s; }
+  .section-block:nth-child(3)  { animation-delay: 0.2s; }
+  .section-block:nth-child(4)  { animation-delay: 0.25s; }
+  .section-block:nth-child(5)  { animation-delay: 0.3s; }
+  .section-block:nth-child(6)  { animation-delay: 0.35s; }
+  .section-block:nth-child(7)  { animation-delay: 0.4s; }
+  .section-block:nth-child(8)  { animation-delay: 0.45s; }
+
+  /* ====== Responsive ====== */
+  @media (max-width: 400px) {
+    .page { padding: 28px 12px 80px; }
+    .carousel-item { width: 108px; }
+    .carousel-img { width: 108px; height: 108px; }
+  }
+
+  @media (min-width: 768px) and (orientation: landscape) {
+    .page { max-width: 640px; padding: 40px 24px 80px; }
+    .carousel-item { width: 140px; }
+    .carousel-img { width: 140px; height: 140px; }
+  }
+
+  /* Floating snowflake sparkles */
+  @keyframes floatUp {
+    0% { opacity: 0; transform: translateY(0) rotate(0deg); }
+    10% { opacity: 0.9; }
+    90% { opacity: 0.4; }
+    100% { opacity: 0; transform: translateY(-120vh) rotate(720deg); }
+  }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header class="header">
-  <div class="header-inner">
-    <a class="logo" href="#">
-      <div class="logo-icon">🛍️</div>
-      <div class="logo-text">
-        <h1>ระบบดูสินค้าร้าน</h1>
-        <span>Store Inventory Viewer</span>
-      </div>
-    </a>
-    <div class="header-badge">
-      <div class="dot-live"></div>
-      <span>พร้อมใช้งาน</span>
+<!-- Background blobs -->
+<div class="bg-blob bg-blob-1"></div>
+<div class="bg-blob bg-blob-2"></div>
+<div class="bg-blob bg-blob-3"></div>
+
+<!-- Snow canvas -->
+<canvas id="snow-canvas"></canvas>
+
+<div class="page">
+
+  <!-- Profile -->
+  <div class="profile-ring">
+    <div class="profile-avatar">
+      <img src="https://bio.linkcdn.cc/upload/6061710i5oj7y/2026021412/177107353285143001.jpeg"
+           alt="MEERAK STUDIO"
+           onerror="this.style.display='none';this.parentNode.innerHTML='🌸'">
     </div>
   </div>
-</header>
+  <div class="profile-name">✿ MEERAK STUDIO ✿</div>
 
-<!-- MAIN -->
-<main class="main">
+  <div class="profile-badge">
+    <span class="badge">🌸 ป้ายแต่งไลน์</span>
+    <span class="badge">🌿 ราคาโดนใจ</span>
+    <span class="badge">✨ พร้อมส่ง</span>
+  </div>
 
-  <!-- CONNECT CARD -->
-  <div class="connect-card">
-    <div class="connect-title">
-      <div class="icon-wrap">📂</div>
-      เชื่อมต่อ Google Drive
+  <div class="profile-desc">
+    ✿ ลิงค์เลือกของแต่งป้ายของซาเวีย ราคาขั้นต่ำอยู่หลัง<br>
+    ⊹ ชื่อกลุ่มนะคะ สนใจเข้ากลุ่มเค้าก็รับดึงน้า ✮⋆˙
+  </div>
+  <div class="notice-box">❕ ราคาในป้ายคือค่าเข้ากลุ่มค่ะ ❕</div>
+
+  <!-- Music Player -->
+  <div class="music-player">
+    <div class="music-thumb">🎵</div>
+    <div class="music-info">
+      <div class="music-title">seasons</div>
+      <div class="music-artist">wave to earth</div>
+      <span class="music-tag">Preview</span>
     </div>
-
-    <div class="input-row">
-      <div class="input-wrap">
-        <span class="input-icon">🔗</span>
-        <input type="url" class="url-input" id="driveUrl"
-          placeholder="วาง URL ของ Google Sheets / Google Drive ที่นี่...">
-      </div>
-      <button class="btn btn-primary" onclick="loadDrive()">
-        <span>🚀</span> เปิดดูสินค้า
-      </button>
-      <button class="btn btn-secondary" onclick="showHelp()">
-        <span>❓</span> วิธีใช้
-      </button>
-    </div>
-
-    <div class="hint-row">
-      <span style="font-size:12px;color:#999;align-self:center;">ตัวอย่าง URL:</span>
-      <div class="hint-chip" onclick="fillExample('sheets')">📊 Google Sheets ตัวอย่าง</div>
-      <div class="hint-chip" onclick="fillExample('folder')">📁 Google Drive Folder</div>
-      <div class="hint-chip" onclick="showDemo()">🎨 ดูตัวอย่างข้อมูล Demo</div>
+    <div class="music-play">▶</div>
+    <div style="position:absolute;top:10px;right:14px;font-size:18px;">
+      <svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#1DB954"/><path d="M7.5 15.5c2.5-1.5 7-1.5 9 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M6.5 12.5c3-2 9-2 11 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M8 9.5c2-1.2 6-1.2 8 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
     </div>
   </div>
 
-  <!-- TABS -->
-  <div class="tabs-row" id="tabsRow" style="display:none">
-    <button class="tab-btn active" onclick="switchTab('embed',this)">📄 ดูผ่าน Embed</button>
-    <button class="tab-btn" onclick="switchTab('demo',this)">🎨 ข้อมูล Demo</button>
-    <button class="tab-btn" onclick="window.open(currentUrl,'_blank')">↗️ เปิดหน้าต่างใหม่</button>
+  <!-- Divider -->
+  <div class="divider">
+    <div class="divider-dot"></div>
+    <div class="divider-line-mid"></div>
+    <div class="divider-dot"></div>
+    <div class="divider-line-mid"></div>
+    <div class="divider-dot"></div>
+    <div class="divider-line-mid"></div>
+    <div class="divider-dot"></div>
   </div>
 
-  <!-- STATS (demo) -->
-  <div class="stats-row" id="statsRow" style="display:none">
-    <div class="stat-card">
-      <div class="stat-icon" style="background:linear-gradient(135deg,#ffd6e7,#ffb3d1)">📦</div>
-      <div class="stat-info">
-        <div class="stat-value" id="statTotal">0</div>
-        <div class="stat-label">รายการสินค้าทั้งหมด</div>
-      </div>
-    </div>
-    <div class="stat-card" style="border-color:var(--green-200)">
-      <div class="stat-icon" style="background:linear-gradient(135deg,#d9f7be,#b7eb8f)">✅</div>
-      <div class="stat-info">
-        <div class="stat-value" id="statIn">0</div>
-        <div class="stat-label">มีสินค้าในสต็อก</div>
-      </div>
-    </div>
-    <div class="stat-card" style="border-color:#fff3e0">
-      <div class="stat-icon" style="background:linear-gradient(135deg,#fff3e0,#ffe0b2)">⚠️</div>
-      <div class="stat-info">
-        <div class="stat-value" id="statLow">0</div>
-        <div class="stat-label">สต็อกเหลือน้อย</div>
-      </div>
-    </div>
-    <div class="stat-card" style="border-color:#fce4ec">
-      <div class="stat-icon" style="background:linear-gradient(135deg,#fce4ec,#f8bbd9)">❌</div>
-      <div class="stat-info">
-        <div class="stat-value" id="statOut">0</div>
-        <div class="stat-label">สินค้าหมดสต็อก</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- EMBED VIEWER -->
-  <div class="viewer-card" id="embedViewer">
-    <div class="viewer-header">
-      <div class="viewer-title">
-        <span>📊</span>
-        <span id="viewerTitle">กำลังโหลด...</span>
-      </div>
-      <div class="viewer-actions">
-        <a class="icon-btn" id="openLink" href="#" target="_blank" title="เปิดแท็บใหม่">↗️</a>
-        <div class="icon-btn" onclick="refreshViewer()" title="รีเฟรช">🔄</div>
-        <div class="icon-btn" onclick="closeViewer()" title="ปิด">✕</div>
-      </div>
-    </div>
-    <div class="iframe-wrap" style="position:relative">
-      <div class="loading-overlay" id="loader">
-        <div class="spinner"></div>
-        <div class="loading-text">กำลังโหลดข้อมูล...</div>
-      </div>
-      <iframe id="embedFrame" src="about:blank"
-        onload="iframeLoaded()" onerror="iframeError()"
-        allow="accelerometer; autoplay; encrypted-media"
-        sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-        referrerpolicy="no-referrer-when-downgrade">
-      </iframe>
-    </div>
-  </div>
-
-  <!-- DEMO CARD -->
-  <div class="demo-card" id="demoSection" style="display:none">
-    <div class="section-header">
-      <div class="section-title">
-        <div class="bubble">🏪</div>
-        รายการสินค้าในร้าน
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn btn-outline" onclick="exportData()" style="padding:8px 16px;font-size:13px">
-          📥 ส่งออก CSV
-        </button>
-        <button class="btn btn-primary" onclick="addProduct()" style="padding:8px 16px;font-size:13px">
-          ➕ เพิ่มสินค้า
-        </button>
-      </div>
-    </div>
-
-    <div class="search-filter-row">
-      <div class="search-box">
-        <span class="s-icon">🔍</span>
-        <input type="text" placeholder="ค้นหาสินค้า..." id="searchInput" oninput="filterProducts()">
-      </div>
-      <select class="filter-select" id="catFilter" onchange="filterProducts()">
-        <option value="">หมวดหมู่ทั้งหมด</option>
-        <option value="เครื่องดื่ม">☕ เครื่องดื่ม</option>
-        <option value="ขนม">🍪 ขนม</option>
-        <option value="ของใช้">🧴 ของใช้</option>
-        <option value="อาหาร">🍜 อาหาร</option>
-        <option value="ผลไม้">🍎 ผลไม้</option>
-      </select>
-      <select class="filter-select" id="stockFilter" onchange="filterProducts()">
-        <option value="">สถานะทั้งหมด</option>
-        <option value="มีสินค้า">✅ มีสินค้า</option>
-        <option value="เหลือน้อย">⚠️ เหลือน้อย</option>
-        <option value="หมดสต็อก">❌ หมดสต็อก</option>
-      </select>
-    </div>
-
-    <div class="product-grid" id="productGrid">
-      <!-- filled by JS -->
-    </div>
-  </div>
-
-</main>
-
-<footer class="footer">
-  สร้างด้วย <span>💖</span> เพื่อร้านค้าของคุณ &nbsp;|&nbsp; รองรับ Google Sheets & Google Drive
-</footer>
-
-<!-- HELP MODAL -->
-<div class="modal-overlay" id="helpModal" onclick="closeModal(event)">
-  <div class="modal">
-    <div class="modal-title">❓ วิธีใช้งานระบบ</div>
-    <div class="modal-body">
-      <div class="modal-step">
-        <div class="step-num">1</div>
-        <div>เปิด <strong>Google Sheets</strong> หรือ <strong>Google Drive</strong> ที่เก็บข้อมูลสินค้าของคุณ</div>
-      </div>
-      <div class="modal-step">
-        <div class="step-num">2</div>
-        <div>คลิก <strong>"แชร์"</strong> → ตั้งค่าเป็น <strong>"ทุกคนที่มีลิงก์ดูได้"</strong></div>
-      </div>
-      <div class="modal-step">
-        <div class="step-num">3</div>
-        <div>คัดลอก URL แล้ววางในช่อง URL ด้านบน</div>
-      </div>
-      <div class="modal-step">
-        <div class="step-num">4</div>
-        <div>กด <strong>"เปิดดูสินค้า"</strong> เพื่อแสดงผล</div>
-      </div>
-      <br>
-      <strong>📌 รูปแบบ URL ที่รองรับ:</strong><br>
-      <br>
-      • Google Sheets:<br>
-      <code>https://docs.google.com/spreadsheets/d/[ID]/edit</code><br><br>
-      • Google Drive Folder:<br>
-      <code>https://drive.google.com/drive/folders/[ID]</code>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-primary" onclick="document.getElementById('helpModal').classList.remove('show')">
-        เข้าใจแล้ว 👍
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
-
-<script>
-// ===== DEMO DATA =====
-const demoProducts = [
-  { id:1, name:'กาแฟสดอาราบิก้า', cat:'เครื่องดื่ม', emoji:'☕', price:65, qty:42, status:'มีสินค้า' },
-  { id:2, name:'น้ำส้มคั้นสด', cat:'เครื่องดื่ม', emoji:'🍊', price:45, qty:8, status:'เหลือน้อย' },
-  { id:3, name:'ชาเขียวมัทฉะ', cat:'เครื่องดื่ม', emoji:'🍵', price:55, qty:30, status:'มีสินค้า' },
-  { id:4, name:'คุกกี้เนยสด', cat:'ขนม', emoji:'🍪', price:35, qty:0, status:'หมดสต็อก' },
-  { id:5, name:'เค้กช็อกโกแลต', cat:'ขนม', emoji:'🎂', price:120, qty:5, status:'เหลือน้อย' },
-  { id:6, name:'ครัวซองต์เนย', cat:'ขนม', emoji:'🥐', price:45, qty:18, status:'มีสินค้า' },
-  { id:7, name:'สบู่กลีเซอรีน', cat:'ของใช้', emoji:'🧴', price:89, qty:24, status:'มีสินค้า' },
-  { id:8, name:'แชมพูสมุนไพร', cat:'ของใช้', emoji:'🌿', price:129, qty:3, status:'เหลือน้อย' },
-  { id:9, name:'ข้าวต้มซอง', cat:'อาหาร', emoji:'🍚', price:25, qty:100, status:'มีสินค้า' },
-  { id:10, name:'บะหมี่กึ่งสำเร็จ', cat:'อาหาร', emoji:'🍜', price:12, qty:200, status:'มีสินค้า' },
-  { id:11, name:'มะม่วงสดหวาน', cat:'ผลไม้', emoji:'🥭', price:80, qty:0, status:'หมดสต็อก' },
-  { id:12, name:'แอปเปิ้ลฟูจิ', cat:'ผลไม้', emoji:'🍎', price:60, qty:15, status:'มีสินค้า' },
-];
-
-let currentUrl = '';
-let filteredProducts = [...demoProducts];
-
-// ===== FILL EXAMPLE =====
-function fillExample(type) {
-  const input = document.getElementById('driveUrl');
-  if (type === 'sheets') {
-    input.value = 'https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms/edit';
-  } else {
-    input.value = 'https://drive.google.com/drive/folders/1a2b3c4d5e6f';
-  }
-  showToast('📋 วาง URL ตัวอย่างแล้ว กดปุ่มเปิดดูสินค้าได้เลย!');
-}
-
-// ===== LOAD DRIVE =====
-function loadDrive() {
-  const rawUrl = document.getElementById('driveUrl').value.trim();
-  if (!rawUrl) { showToast('⚠️ กรุณาใส่ URL ก่อนนะคะ'); return; }
-
-  const embedUrl = convertToEmbed(rawUrl);
-  if (!embedUrl) { showToast('⚠️ URL ไม่ถูกต้อง กรุณาใช้ Google Sheets หรือ Google Drive'); return; }
-
-  currentUrl = rawUrl;
-  showEmbedViewer(embedUrl, rawUrl);
-}
-
-function convertToEmbed(url) {
-  // Google Sheets
-  if (url.includes('docs.google.com/spreadsheets')) {
-    const idMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    if (idMatch) {
-      return `https://docs.google.com/spreadsheets/d/${idMatch[1]}/htmlview?rm=minimal`;
-    }
-  }
-  // Google Drive folder
-  if (url.includes('drive.google.com/drive/folders')) {
-    const idMatch = url.match(/folders\/([a-zA-Z0-9_-]+)/);
-    if (idMatch) {
-      return `https://drive.google.com/embeddedfolderview?id=${idMatch[1]}#list`;
-    }
-  }
-  // Google Drive file
-  if (url.includes('drive.google.com/file/d/')) {
-    const idMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    if (idMatch) {
-      return `https://drive.google.com/file/d/${idMatch[1]}/preview`;
-    }
-  }
-  // Generic URL — try directly
-  if (url.startsWith('http')) return url;
-  return null;
-}
-
-function showEmbedViewer(embedUrl, rawUrl) {
-  const viewer = document.getElementById('embedViewer');
-  const frame  = document.getElementById('embedFrame');
-  const loader = document.getElementById('loader');
-  const tabsRow = document.getElementById('tabsRow');
-  const openLink = document.getElementById('openLink');
-  const title = document.getElementById('viewerTitle');
-
-  title.textContent = 'โหลดข้อมูลจาก Google Drive...';
-  openLink.href = rawUrl;
-  loader.classList.add('show');
-
-  viewer.classList.add('show');
-  tabsRow.style.display = 'flex';
-  scrollTo({ top: viewer.offsetTop - 100, behavior: 'smooth' });
-
-  frame.src = embedUrl;
-  showToast('🚀 กำลังเชื่อมต่อ Google Drive...');
-}
-
-function iframeLoaded() {
-  document.getElementById('loader').classList.remove('show');
-  document.getElementById('viewerTitle').textContent = 'ข้อมูลสินค้าจาก Google Drive';
-  showToast('✅ โหลดข้อมูลสำเร็จแล้ว!');
-}
-function iframeError() {
-  document.getElementById('loader').classList.remove('show');
-  document.getElementById('viewerTitle').textContent = '⚠️ ไม่สามารถโหลดได้ — ลองเปิดในแท็บใหม่';
-  showToast('⚠️ ไม่สามารถ Embed ได้ — กรุณาเปิดในแท็บใหม่');
-}
-
-function refreshViewer() {
-  const frame = document.getElementById('embedFrame');
-  const src = frame.src;
-  frame.src = 'about:blank';
-  setTimeout(() => { frame.src = src; }, 300);
-  document.getElementById('loader').classList.add('show');
-}
-
-function closeViewer() {
-  document.getElementById('embedViewer').classList.remove('show');
-  document.getElementById('tabsRow').style.display = 'none';
-}
-
-// ===== TABS =====
-function switchTab(tab, el) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active','active-green'));
-  el.classList.add(tab === 'demo' ? 'active-green' : 'active');
-
-  if (tab === 'embed') {
-    document.getElementById('embedViewer').classList.add('show');
-    document.getElementById('demoSection').style.display = 'none';
-    document.getElementById('statsRow').style.display = 'none';
-  } else {
-    document.getElementById('embedViewer').classList.remove('show');
-    showDemo();
-  }
-}
-
-// ===== DEMO =====
-function showDemo() {
-  const demo = document.getElementById('demoSection');
-  const stats = document.getElementById('statsRow');
-  const tabs  = document.getElementById('tabsRow');
-
-  demo.style.display = 'block';
-  stats.style.display = 'grid';
-  tabs.style.display = 'flex';
-
-  demo.style.animation = 'fadeUp .4s ease-out';
-  renderStats(); renderProducts(demoProducts);
-  scrollTo({ top: stats.offsetTop - 100, behavior: 'smooth' });
-  showToast('🎨 แสดงข้อมูล Demo — นี่คือหน้าตาของระบบ!');
-}
-
-function renderStats() {
-  const total = demoProducts.length;
-  const inStock = demoProducts.filter(p => p.status === 'มีสินค้า').length;
-  const low     = demoProducts.filter(p => p.status === 'เหลือน้อย').length;
-  const out     = demoProducts.filter(p => p.status === 'หมดสต็อก').length;
-  animateNum('statTotal', total);
-  animateNum('statIn',    inStock);
-  animateNum('statLow',   low);
-  animateNum('statOut',   out);
-}
-
-function animateNum(id, target) {
-  const el = document.getElementById(id);
-  let cur = 0; const step = Math.max(1, Math.floor(target / 20));
-  const t = setInterval(() => {
-    cur = Math.min(cur + step, target);
-    el.textContent = cur;
-    if (cur >= target) clearInterval(t);
-  }, 40);
-}
-
-function renderProducts(list) {
-  const grid = document.getElementById('productGrid');
-  if (!list.length) {
-    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
-      <div class="big-icon">🔍</div>
-      <h3>ไม่พบสินค้า</h3>
-      <p>ลองเปลี่ยนคำค้นหาหรือตัวกรอง</p>
-    </div>`;
-    return;
-  }
-  grid.innerHTML = list.map((p, i) => {
-    const badgeClass = p.status === 'มีสินค้า' ? 'badge-in' : p.status === 'เหลือน้อย' ? 'badge-low' : 'badge-out';
-    const badgeText  = p.status === 'มีสินค้า' ? '✅ มีสินค้า' : p.status === 'เหลือน้อย' ? '⚠️ เหลือน้อย' : '❌ หมด';
-    return `<div class="product-card" style="animation-delay:${i*0.05}s;animation:fadeUp .4s ease-out both"
-      onclick="showProductDetail(${p.id})">
-      <div class="product-img-wrap">
-        <div class="product-img">${p.emoji}</div>
-      </div>
-      <span class="product-badge ${badgeClass}">${badgeText}</span>
-      <div class="product-body">
-        <div class="product-name">${p.name}</div>
-        <div class="product-cat">${p.cat}</div>
-        <div class="product-footer">
-          <div class="product-price">฿${p.price.toLocaleString()}</div>
-          <div class="product-qty">คงเหลือ ${p.qty}</div>
+  <!-- เครือที่เป็นตัวแทน -->
+  <div class="section-block" style="width:100%">
+    <div class="section-header">เครือที่เป็นตัวแทน</div>
+    <div class="carousel-wrap">
+      <div class="carousel-scroll">
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1yTo9B5cE2wekDIUst6nwMjobEzh56bw4" target="_blank">
+            <div class="carousel-img"><img src="https://bio.linkcdn.cc/upload/6061710i5oj7y/2026021412/177107353285143001.jpeg" alt="Super kupkup" onerror="this.parentNode.innerHTML='<div class=img-placeholder>🐹</div>'"></div>
+            <div class="carousel-name">Super kupkup</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1yTo9B5cE2wekDIUst6nwMjobEzh56bw4" target="_blank" class="carousel-price-btn">129฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1WvSoRYLj7OdC6woNob1rBBzwXZpfTkQV" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🌙</div></div>
+            <div class="carousel-name">Moon garden</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1WvSoRYLj7OdC6woNob1rBBzwXZpfTkQV" target="_blank" class="carousel-price-btn">499฿</a>
         </div>
       </div>
-    </div>`;
-  }).join('');
+    </div>
+  </div>
+
+  <!-- เครือซาเวีย -->
+  <div class="section-block" style="width:100%">
+    <div class="section-header">เครือซาเวีย</div>
+    <div class="carousel-wrap">
+      <div class="carousel-scroll">
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1rr-uCPP0BBDk1vo4dzBvXlJmnCGYuCWZ" target="_blank">
+            <div class="carousel-img"><img src="https://bio.linkcdn.cc/upload/6061710i5oj7y/2026051111/177849997299578158.jpg" alt="tiny puffy" onerror="this.parentNode.innerHTML='<div class=img-placeholder>🦈</div>'"></div>
+            <div class="carousel-name">xavia 's tiny puffy</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1rr-uCPP0BBDk1vo4dzBvXlJmnCGYuCWZ" target="_blank" class="carousel-price-btn">49฿</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div class="divider">
+    <div class="divider-dot"></div>
+    <div class="divider-line-mid"></div>
+    <div class="divider-dot"></div>
+    <div class="divider-line-mid"></div>
+    <div class="divider-dot"></div>
+    <div class="divider-line-mid"></div>
+    <div class="divider-dot"></div>
+  </div>
+
+  <!-- เลือกตูน -->
+  <div class="section-block" style="width:100%">
+    <div class="section-header">เลือกตูน</div>
+    <div class="carousel-wrap">
+      <div class="carousel-section-title">⊹ ᰔ​ ตูนห้องเอฟ ₊˚</div>
+      <div class="carousel-scroll">
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/18T_RLN1-KO21Ad3YgSZLrOTOjm0TD_4P" target="_blank">
+            <div class="carousel-img"><img src="https://bio.linkcdn.cc/upload/2025020113/173841775685576650.jpg" alt="Hammyham" onerror="this.parentNode.innerHTML='<div class=img-placeholder>🐹</div>'"></div>
+            <div class="carousel-name">Hammyham 50฿+</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/18T_RLN1-KO21Ad3YgSZLrOTOjm0TD_4P" target="_blank" class="carousel-price-btn">click</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1SIUb1j56e9o1s0BW2_lxjvFWaeqhgM-a" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🍒</div></div>
+            <div class="carousel-name">Chu Chu cherry</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1SIUb1j56e9o1s0BW2_lxjvFWaeqhgM-a" target="_blank" class="carousel-price-btn">click</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1F2NVk9gTx5XOsBk6YtT3FI0Twrj_gS9d" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🍊</div></div>
+            <div class="carousel-name">Orenji cheesy</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1F2NVk9gTx5XOsBk6YtT3FI0Twrj_gS9d" target="_blank" class="carousel-price-btn">click</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1niCXioJWgfeXR51CJBmrx4DdUGoQ_Okk" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🌸</div></div>
+            <div class="carousel-name">Sakura 60฿+</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1niCXioJWgfeXR51CJBmrx4DdUGoQ_Okk" target="_blank" class="carousel-price-btn">click</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1BOb9R6gFZR36mbX9iL89vFBw3mHtJPpK" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🍮</div></div>
+            <div class="carousel-name">Caramel syrup</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1BOb9R6gFZR36mbX9iL89vFBw3mHtJPpK" target="_blank" class="carousel-price-btn">129฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/folderview?id=17Py1grkNT7VXN_McrpcYlPiJZr2lAhuJ" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🍦</div></div>
+            <div class="carousel-name">Summer suckers</div>
+          </a>
+          <a href="https://drive.google.com/folderview?id=17Py1grkNT7VXN_McrpcYlPiJZr2lAhuJ" target="_blank" class="carousel-price-btn">39฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1nAcemYJKFyQ9iaiVgICb8QolGBjjYA8g" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🪆</div></div>
+            <div class="carousel-name">Ammy Dolly</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1nAcemYJKFyQ9iaiVgICb8QolGBjjYA8g" target="_blank" class="carousel-price-btn">39฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://citly.me/MSLcl" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🐱</div></div>
+            <div class="carousel-name">Felicity</div>
+          </a>
+          <a href="https://citly.me/MSLcl" target="_blank" class="carousel-price-btn">59฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/104KjLTuoJ_duX7d1iieO19vatV_xe_pl" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🐰</div></div>
+            <div class="carousel-name">กาต่ายแก้มตุ่ย</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/104KjLTuoJ_duX7d1iieO19vatV_xe_pl" target="_blank" class="carousel-price-btn">59฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/12kbLU6v1UZKeMxE-Dt-pDIFUtymYL-yP" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🎀</div></div>
+            <div class="carousel-name">Mable Toon</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/12kbLU6v1UZKeMxE-Dt-pDIFUtymYL-yP" target="_blank" class="carousel-price-btn">29฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1kYpfEq5Pu7AvlJkwBqqgsNM2gBBvme-i" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🐇</div></div>
+            <div class="carousel-name">Mellibunny 50฿+</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1kYpfEq5Pu7AvlJkwBqqgsNM2gBBvme-i" target="_blank" class="carousel-price-btn">69฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1EJY_kRtb-p5-V6_0d2OrrVDsAm5oVZyG" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🍦</div></div>
+            <div class="carousel-name">Ammy Wendy</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1EJY_kRtb-p5-V6_0d2OrrVDsAm5oVZyG" target="_blank" class="carousel-price-btn">129฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1TQUErEwPL_LagvEPeCJoC18TP9QI1Ulg" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🐻</div></div>
+            <div class="carousel-name">Edith Friend</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1TQUErEwPL_LagvEPeCJoC18TP9QI1Ulg" target="_blank" class="carousel-price-btn">159฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1wIotEyAn7YdbnSc4p7Xhs3XGB4kosavW" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🐻</div></div>
+            <div class="carousel-name">Beary tales</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1wIotEyAn7YdbnSc4p7Xhs3XGB4kosavW" target="_blank" class="carousel-price-btn">89฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1LElAnqLLFEWT-2hwbjAoRUhgBAt9dscC" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🍦</div></div>
+            <div class="carousel-name">Wendycream</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1LElAnqLLFEWT-2hwbjAoRUhgBAt9dscC" target="_blank" class="carousel-price-btn">139฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1B4fs1X5dlzDY8H9Io89iRRYUjXclqwrI" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🌷</div></div>
+            <div class="carousel-name">Jida morre</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1B4fs1X5dlzDY8H9Io89iRRYUjXclqwrI" target="_blank" class="carousel-price-btn">169฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/10KcQr5lB8oSwcFSpDurJwu4nebAVjsy5" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🐹</div></div>
+            <div class="carousel-name">แฮมจิ๋วใส่กล่อง</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/10KcQr5lB8oSwcFSpDurJwu4nebAVjsy5" target="_blank" class="carousel-price-btn">199฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/13oAQZXed6CuJtZy2f0a84muhZCUm_wIN" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🐰</div></div>
+            <div class="carousel-name">Bunbun jewjew</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/13oAQZXed6CuJtZy2f0a84muhZCUm_wIN" target="_blank" class="carousel-price-btn">119฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1Dd5tUJmsk44u57dlzmNz1o0mnsKsUP3c" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">👸</div></div>
+            <div class="carousel-name">Princess ivy</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1Dd5tUJmsk44u57dlzmNz1o0mnsKsUP3c" target="_blank" class="carousel-price-btn">249฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1-OS83NEc18l0iR-4OdrelafH4J2WHVKk" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🦒</div></div>
+            <div class="carousel-name">Chubby zoo</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1-OS83NEc18l0iR-4OdrelafH4J2WHVKk" target="_blank" class="carousel-price-btn">159฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1cDCHkLjJbXMT3mTPnVslCUJyMALVrAT3" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🐋</div></div>
+            <div class="carousel-name">little whale</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1cDCHkLjJbXMT3mTPnVslCUJyMALVrAT3" target="_blank" class="carousel-price-btn">119฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1EIQtGiGAFV0Z8Fi-xNprnQspOmaHj-KA" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🍫</div></div>
+            <div class="carousel-name">Brownies pop</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1EIQtGiGAFV0Z8Fi-xNprnQspOmaHj-KA" target="_blank" class="carousel-price-btn">79฿</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div class="divider">
+    <div class="divider-dot"></div>
+    <div class="divider-line-mid"></div>
+    <div class="divider-dot"></div>
+    <div class="divider-line-mid"></div>
+    <div class="divider-dot"></div>
+    <div class="divider-line-mid"></div>
+    <div class="divider-dot"></div>
+  </div>
+
+  <!-- เลือกของตกแต่ง -->
+  <div class="section-block" style="width:100%">
+    <div class="section-header">เลือกของตกแต่ง</div>
+    <div class="carousel-wrap">
+      <div class="carousel-scroll">
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1lxoiIqlaY6HUuTiDIMA_qnNunLUuVAVA" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🏛️</div></div>
+            <div class="carousel-name">Roman deco</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1lxoiIqlaY6HUuTiDIMA_qnNunLUuVAVA" target="_blank" class="carousel-price-btn">99฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1DRRFgR7jkNR49icu86SZxp4_5leswUdI" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🌸</div></div>
+            <div class="carousel-name">fuzzy bloom</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1DRRFgR7jkNR49icu86SZxp4_5leswUdI" target="_blank" class="carousel-price-btn">75฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1al32yYiZHCTYWObHus-z_oao-6L6AwKA" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🍫</div></div>
+            <div class="carousel-name">Chocolate</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1al32yYiZHCTYWObHus-z_oao-6L6AwKA" target="_blank" class="carousel-price-btn">99฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/12KFqvj837HIIPLhc_Iw47c0UB2elNygV" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🥛</div></div>
+            <div class="carousel-name">Better milk</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/12KFqvj837HIIPLhc_Iw47c0UB2elNygV" target="_blank" class="carousel-price-btn">25฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1gkO83qiJAcYuUSJPxeChJFIgbEy5wLf2" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">💐</div></div>
+            <div class="carousel-name">Nina collection</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1gkO83qiJAcYuUSJPxeChJFIgbEy5wLf2" target="_blank" class="carousel-price-btn">129฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/13iqj-fIEbWvksblZpQG2NWnOkVLZbg4m" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🐾</div></div>
+            <div class="carousel-name">Moofy Munchkin</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/13iqj-fIEbWvksblZpQG2NWnOkVLZbg4m" target="_blank" class="carousel-price-btn">99฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1griZNuFrBQ4plAvQ1MhY05DZ3ZvalsbI" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🍯</div></div>
+            <div class="carousel-name">Littlehoneybbee</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1griZNuFrBQ4plAvQ1MhY05DZ3ZvalsbI" target="_blank" class="carousel-price-btn">59฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/14ykOKOy3blFg0hOFZxlwyW299Nvj6Zld" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🌷</div></div>
+            <div class="carousel-name">pretty bloom</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/14ykOKOy3blFg0hOFZxlwyW299Nvj6Zld" target="_blank" class="carousel-price-btn">159฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/18t5vrsoGrUokMslSegUmrY33Sca4qvrY" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🧸</div></div>
+            <div class="carousel-name">Teddy bloom</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/18t5vrsoGrUokMslSegUmrY33Sca4qvrY" target="_blank" class="carousel-price-btn">99฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1Ofd1YTpkaefZQO3LHrUS4wcNlcBEPbnQ" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🍂</div></div>
+            <div class="carousel-name">Cinamon by bebiw</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1Ofd1YTpkaefZQO3LHrUS4wcNlcBEPbnQ" target="_blank" class="carousel-price-btn">โปร 39฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://urlkub.co/sHbbHy" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">💎</div></div>
+            <div class="carousel-name">Jules V.1</div>
+          </a>
+          <a href="https://urlkub.co/sHbbHy" target="_blank" class="carousel-price-btn">Pro 44฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1uDqPPWVvBWAi8equDljy3S07mGEHNcxT" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">💕</div></div>
+            <div class="carousel-name">ILOVENARIN</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1uDqPPWVvBWAi8equDljy3S07mGEHNcxT" target="_blank" class="carousel-price-btn">22฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1Yt1KJef2vL3ZmlTPs08YIdQ_vKdrxRG-" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🍬</div></div>
+            <div class="carousel-name">Lumi sweet</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1Yt1KJef2vL3ZmlTPs08YIdQ_vKdrxRG-" target="_blank" class="carousel-price-btn">39฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1-ny6swZtnN_YHncOIyde0SPGCcJdNxj1" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🎭</div></div>
+            <div class="carousel-name">Shupufty Jolie</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1-ny6swZtnN_YHncOIyde0SPGCcJdNxj1" target="_blank" class="carousel-price-btn">49฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1-5D_k--DGdctFQKzwYS0PH6dY7pQw__O" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🎈</div></div>
+            <div class="carousel-name">jambyboo</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1-5D_k--DGdctFQKzwYS0PH6dY7pQw__O" target="_blank" class="carousel-price-btn">49฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1j_issPP2mtJOoeuL6UpHm2Ofx2ZeZqRT" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🏮</div></div>
+            <div class="carousel-name">jejudeco</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1j_issPP2mtJOoeuL6UpHm2Ofx2ZeZqRT" target="_blank" class="carousel-price-btn">19฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1axABSUg_y84ffsi2XV8QaGVMSvGfraTA" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🥛</div></div>
+            <div class="carousel-name">Mini milk butter</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1axABSUg_y84ffsi2XV8QaGVMSvGfraTA" target="_blank" class="carousel-price-btn">9฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/11tSL_BlT046ymaF1UDKy9Ogp1kebq3xO" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🐤</div></div>
+            <div class="carousel-name">เบบี้เบิ้บบู</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/11tSL_BlT046ymaF1UDKy9Ogp1kebq3xO" target="_blank" class="carousel-price-btn">39฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1LMSW5UAkj5T9a7QW5-z3paWnP5i3bFWN" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🧁</div></div>
+            <div class="carousel-name">Cream check</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1LMSW5UAkj5T9a7QW5-z3paWnP5i3bFWN" target="_blank" class="carousel-price-btn">29฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1Jz9VfT5WL32fCEfERJFrvBhaIRCx-_v7" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🌀</div></div>
+            <div class="carousel-name">chunarigo</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1Jz9VfT5WL32fCEfERJFrvBhaIRCx-_v7" target="_blank" class="carousel-price-btn">19฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/10UK-zNuAKn2SNHlcOenRDr18AMIxUaei" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🫚</div></div>
+            <div class="carousel-name">Ginger group</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/10UK-zNuAKn2SNHlcOenRDr18AMIxUaei" target="_blank" class="carousel-price-btn">49฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/13yzc29bnI-gDUZVfrUIbWA4HyapNGomg" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">☁️</div></div>
+            <div class="carousel-name">Mofu risen</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/13yzc29bnI-gDUZVfrUIbWA4HyapNGomg" target="_blank" class="carousel-price-btn">139฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://url.in.th/KDfMe" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🐚</div></div>
+            <div class="carousel-name">little scallop</div>
+          </a>
+          <a href="https://url.in.th/KDfMe" target="_blank" class="carousel-price-btn">59฿</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div class="divider">
+    <div class="divider-dot"></div>
+    <div class="divider-line-mid"></div>
+    <div class="divider-dot"></div>
+    <div class="divider-line-mid"></div>
+    <div class="divider-dot"></div>
+    <div class="divider-line-mid"></div>
+    <div class="divider-dot"></div>
+  </div>
+
+  <!-- เลือกบล็อก -->
+  <div class="section-block" style="width:100%">
+    <div class="section-header">เลือกบล็อก</div>
+    <div class="carousel-wrap">
+      <div class="carousel-scroll">
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1fkZ5iNwFpFNjmBzuWmNu1FhpqG5MJLvA" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">💜</div></div>
+            <div class="carousel-name">Magenta callelia 🔥</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1fkZ5iNwFpFNjmBzuWmNu1FhpqG5MJLvA" target="_blank" class="carousel-price-btn">49฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://shorturl.asia/cvyoz" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">📦</div></div>
+            <div class="carousel-name">Pukpuii box</div>
+          </a>
+          <a href="https://shorturl.asia/cvyoz" target="_blank" class="carousel-price-btn">89฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/196IVPoKziZlDLp9ygV6Tjg-rvfVh9o21" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🌙</div></div>
+            <div class="carousel-name">Good night</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/196IVPoKziZlDLp9ygV6Tjg-rvfVh9o21" target="_blank" class="carousel-price-btn">69฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1fBmyM2G4EUg-TngOyiZxfeE4_o79BRQL" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">😊</div></div>
+            <div class="carousel-name">smileliz box</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1fBmyM2G4EUg-TngOyiZxfeE4_o79BRQL" target="_blank" class="carousel-price-btn">89฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1WoyDSuaH6Uqm9BfptO4DlXrmI0VUuUgZ" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🦆</div></div>
+            <div class="carousel-name">little duck</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1WoyDSuaH6Uqm9BfptO4DlXrmI0VUuUgZ" target="_blank" class="carousel-price-btn">59฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1LglTVH8PQZ1p06VMHCIa3_j1psKrBg6A" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🏯</div></div>
+            <div class="carousel-name">ichimaru ตูน&บล็อก</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1LglTVH8PQZ1p06VMHCIa3_j1psKrBg6A" target="_blank" class="carousel-price-btn">79฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1oUKEzjEGkSOOT6hUt3UP9_HsUynBgLQp" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🎵</div></div>
+            <div class="carousel-name">Ammy harmony</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1oUKEzjEGkSOOT6hUt3UP9_HsUynBgLQp" target="_blank" class="carousel-price-btn">99฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1-IpcwfClSKWmkftCyUmCGaPVWI-BYJSm" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🐕</div></div>
+            <div class="carousel-name">Samoyed box</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1-IpcwfClSKWmkftCyUmCGaPVWI-BYJSm" target="_blank" class="carousel-price-btn">49฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1XomES1UYV7sVCjtMT2gqF0KLd1rLotir" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🫧</div></div>
+            <div class="carousel-name">Bubie box</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1XomES1UYV7sVCjtMT2gqF0KLd1rLotir" target="_blank" class="carousel-price-btn">59฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/17BBh00-gYLu4zsWzNXS5UQ4lhmpqDW1H" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🌼</div></div>
+            <div class="carousel-name">Daisy box</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/17BBh00-gYLu4zsWzNXS5UQ4lhmpqDW1H" target="_blank" class="carousel-price-btn">129฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://bit.ly/yumechanbymild" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">✨</div></div>
+            <div class="carousel-name">Yumechan</div>
+          </a>
+          <a href="https://bit.ly/yumechanbymild" target="_blank" class="carousel-price-btn">39฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1WMNZHCfbV34LWRK6gwFHOb6GJrkLwtv-" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">⚡</div></div>
+            <div class="carousel-name">Hatari</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1WMNZHCfbV34LWRK6gwFHOb6GJrkLwtv-" target="_blank" class="carousel-price-btn">59฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1Flf8JfPURWsc-jdMf3KRSuXZM7RsosQy" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🍌</div></div>
+            <div class="carousel-name">Banoffee</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1Flf8JfPURWsc-jdMf3KRSuXZM7RsosQy" target="_blank" class="carousel-price-btn">69฿</a>
+        </div>
+      </div>
+    </div>
+    <a href="https://drive.google.com/drive/folders/1NGXo-plFMR1aZ9HbCeLJoO5m4IymVV6h" target="_blank" class="link-btn" style="margin-top:10px">
+      ❌ ไม่พร้อมใช้ Plutonium — เลือกบล็อก
+    </a>
+  </div>
+
+  <!-- Divider -->
+  <div class="divider">
+    <div class="divider-dot"></div>
+    <div class="divider-line-mid"></div>
+    <div class="divider-dot"></div>
+    <div class="divider-line-mid"></div>
+    <div class="divider-dot"></div>
+    <div class="divider-line-mid"></div>
+    <div class="divider-dot"></div>
+  </div>
+
+  <!-- กลุ่มสอน -->
+  <div class="section-block" style="width:100%">
+    <div class="section-header">กลุ่มสอน</div>
+    <div class="carousel-wrap">
+      <div class="carousel-scroll">
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/14jCD6T3tsbQiFvhQD_xjuZ33XOfeH-3i" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🪄</div></div>
+            <div class="carousel-name">Magic room</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/14jCD6T3tsbQiFvhQD_xjuZ33XOfeH-3i" target="_blank" class="carousel-price-btn">49฿</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div class="divider">
+    <div class="divider-dot"></div>
+    <div class="divider-line-mid"></div>
+    <div class="divider-dot"></div>
+    <div class="divider-line-mid"></div>
+    <div class="divider-dot"></div>
+    <div class="divider-line-mid"></div>
+    <div class="divider-dot"></div>
+  </div>
+
+  <!-- กลุ่มรวม | ฟ้อนต์ -->
+  <div class="section-block" style="width:100%">
+    <div class="section-header">กลุ่มรวม | ฟ้อนต์</div>
+    <div class="carousel-wrap">
+      <div class="carousel-scroll">
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/1NBRaC1m0HvP4HbJkncXlx957iDCZnl0m" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🖍️</div></div>
+            <div class="carousel-name">aiko's crayon</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1NBRaC1m0HvP4HbJkncXlx957iDCZnl0m" target="_blank" class="carousel-price-btn">79฿</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/drive/folders/13MUbwjurbPgTdI1lpQelUXAc9rS1hbqG" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🎨</div></div>
+            <div class="carousel-name">linryzanowie 35฿+</div>
+          </a>
+          <a href="https://drive.google.com/drive/folders/13MUbwjurbPgTdI1lpQelUXAc9rS1hbqG" target="_blank" class="carousel-price-btn">เลือกขตต, บล็อก</a>
+        </div>
+        <div class="carousel-item">
+          <a href="https://drive.google.com/file/d/1JAPCEUveX8lWh0WHBa0mMErJOL31bOxx" target="_blank">
+            <div class="carousel-img"><div class="img-placeholder">🌺</div></div>
+            <div class="carousel-name">Flower lovely</div>
+          </a>
+          <a href="https://drive.google.com/file/d/1JAPCEUveX8lWh0WHBa0mMErJOL31bOxx" target="_blank" class="carousel-price-btn">49฿</a>
+        </div>
+      </div>
+    </div>
+    <a href="https://drive.google.com/drive/folders/12-9tvk3tBvIl1TkRsPGyvGEa9bEXdTif" target="_blank" class="link-btn" style="margin-top:10px">
+      🔤 Font MBH
+    </a>
+  </div>
+
+  <div style="height:60px"></div>
+</div>
+
+<!-- Fixed Footer -->
+<div class="footer-bar">
+  <span style="font-size:18px">🌸</span>
+  <span style="font-family:'Mitr',sans-serif"><strong>MEERAK STUDIO</strong></span>
+  <span class="footer-right">✿ ยินดีต้อนรับ!</span>
+</div>
+
+<script>
+// ====== Snow Effect ======
+const canvas = document.getElementById('snow-canvas');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const SNOW_COUNT = 80;
+const flakes = [];
+
+// Snow colors: white, soft pink, soft mint (NO blue)
+const snowColors = [
+  'rgba(255,255,255,',
+  'rgba(255,220,235,',
+  'rgba(220,255,235,',
+  'rgba(255,240,248,',
+  'rgba(235,255,245,',
+];
+
+for (let i = 0; i < SNOW_COUNT; i++) {
+  flakes.push({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    r: Math.random() * 4 + 1.5,
+    speed: Math.random() * 1.2 + 0.4,
+    wind: (Math.random() - 0.5) * 0.6,
+    opacity: Math.random() * 0.6 + 0.3,
+    color: snowColors[Math.floor(Math.random() * snowColors.length)],
+    wobble: Math.random() * Math.PI * 2,
+    wobbleSpeed: Math.random() * 0.02 + 0.005,
+    // Some flakes are sparkle/star shaped
+    isStar: Math.random() < 0.15,
+  });
 }
 
-function filterProducts() {
-  const q    = document.getElementById('searchInput').value.toLowerCase();
-  const cat  = document.getElementById('catFilter').value;
-  const stock = document.getElementById('stockFilter').value;
-  filteredProducts = demoProducts.filter(p =>
-    (!q || p.name.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q)) &&
-    (!cat || p.cat === cat) &&
-    (!stock || p.status === stock)
-  );
-  renderProducts(filteredProducts);
+function drawStar(cx, cy, r, opacity, color) {
+  ctx.save();
+  ctx.globalAlpha = opacity;
+  ctx.fillStyle = color + '1)';
+  ctx.strokeStyle = color + '0.8)';
+  ctx.lineWidth = 0.5;
+  ctx.translate(cx, cy);
+  ctx.beginPath();
+  for (let i = 0; i < 6; i++) {
+    const angle = (i * Math.PI) / 3;
+    const x1 = Math.cos(angle) * r;
+    const y1 = Math.sin(angle) * r;
+    const x2 = Math.cos(angle) * (r * 0.3);
+    const y2 = Math.sin(angle) * (r * 0.3);
+    if (i === 0) ctx.moveTo(x1, y1);
+    else ctx.lineTo(x1, y1);
+    ctx.lineTo(x2, y2);
+  }
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
 }
 
-function showProductDetail(id) {
-  const p = demoProducts.find(x => x.id === id);
-  if (!p) return;
-  showToast(`${p.emoji} ${p.name} — ราคา ฿${p.price} | คงเหลือ ${p.qty} ชิ้น`);
-}
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-function addProduct() {
-  showToast('✨ ฟีเจอร์เพิ่มสินค้าพร้อมใช้งาน — เชื่อมต่อ Google Sheets เพื่อบันทึก!');
-}
+  flakes.forEach(f => {
+    f.wobble += f.wobbleSpeed;
+    f.x += f.wind + Math.sin(f.wobble) * 0.4;
+    f.y += f.speed;
 
-function exportData() {
-  const rows = [['ชื่อสินค้า','หมวดหมู่','ราคา','คงเหลือ','สถานะ'],
-    ...demoProducts.map(p => [p.name, p.cat, p.price, p.qty, p.status])];
-  const csv = rows.map(r => r.join(',')).join('\n');
-  const blob = new Blob(['\ufeff'+csv], {type:'text/csv;charset=utf-8'});
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'สินค้าในร้าน.csv'; a.click();
-  showToast('📥 ส่งออกไฟล์ CSV เรียบร้อยแล้ว!');
-}
+    if (f.y > canvas.height + 10) {
+      f.y = -10;
+      f.x = Math.random() * canvas.width;
+    }
+    if (f.x > canvas.width + 10) f.x = -10;
+    if (f.x < -10) f.x = canvas.width + 10;
 
-// ===== MODAL / HELP =====
-function showHelp() { document.getElementById('helpModal').classList.add('show'); }
-function closeModal(e) {
-  if (e.target.id === 'helpModal') document.getElementById('helpModal').classList.remove('show');
-}
+    if (f.isStar) {
+      drawStar(f.x, f.y, f.r * 1.5, f.opacity, f.color);
+    } else {
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+      ctx.fillStyle = f.color + f.opacity + ')';
+      ctx.fill();
+      // glow
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, f.r * 1.8, 0, Math.PI * 2);
+      ctx.fillStyle = f.color + (f.opacity * 0.2) + ')';
+      ctx.fill();
+    }
+  });
 
-// ===== TOAST =====
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
+  requestAnimationFrame(animate);
 }
+animate();
 
-// ===== ENTER KEY =====
-document.getElementById('driveUrl').addEventListener('keydown', e => {
-  if (e.key === 'Enter') loadDrive();
+// ====== Hover shimmer on cards ======
+document.querySelectorAll('.carousel-img').forEach(el => {
+  el.addEventListener('mouseenter', function() {
+    this.style.boxShadow = '0 8px 24px rgba(255,133,179,0.35), 0 0 0 2px rgba(94,207,138,0.4)';
+  });
+  el.addEventListener('mouseleave', function() {
+    this.style.boxShadow = '';
+  });
 });
-
-// Auto show demo on first load hint
-setTimeout(() => showToast('👋 สวัสดี! กด "ดูตัวอย่างข้อมูล Demo" เพื่อเริ่มต้น'), 800);
 </script>
 </body>
 </html>
